@@ -9,6 +9,9 @@ const ShowProducts = () => {
     //usamos el hook de estate y effect
     const [ products, setProducts ] = useState( [] )
 
+    //hook para busqueda
+    const [ search, setSearch ] = useState( [] )
+
     useEffect ( ()=> {
         getAllProducts()
     }, [])
@@ -24,10 +27,18 @@ const ShowProducts = () => {
         getAllProducts()
     }
 
+    //funcion de busqueda
+    const searcher = (e) => {
+        setSearch(e.target.value)
+        console.log(e.target.value)
+    }
+    //funcion para filtrar los datos
+    const results = !search ? products : products.filter((val)=> val.name.toString().toLowerCase().includes(search.toString().toLocaleLowerCase()) )
 
     //renderisando
     return (
         <div>
+            <input value={search} onChange={searcher} type='text' placeholder='Search...' className='form-control'/>
             <div>
                 <Link to="/create" className='btn btn-success btn-lg my-2 text-white'>Create</Link>
             </div>
@@ -46,13 +57,34 @@ const ShowProducts = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    { products.map( (product) => (
+
+                    {results.map((result)=>(
+                        <tr key={result.id}>
+                            <td> {result.name} </td>
+                            <td> {result.descripcion} </td>
+                            <td> {result.price} </td>
+                            <td> {result.stock} </td>
+                            <td>
+                                <img src={result.image}/>
+                            </td>
+                            <td> {result.id_categoria} </td>
+                            <td> {result.id_marca} </td>
+                            <td>
+                                <Link to={`/edit/${result.id}`} className='btn btn-warning'>Edit</Link>
+                                <button onClick={ ()=> deleteProduct(result.id) } className='btn btn-danger'>Delete</button>
+                            </td>
+                        </tr>
+                    ))}
+
+                    {/* { products.map( (product) => (
                         <tr key={product.id}>
                             <td> {product.name} </td>
                             <td> {product.descripcion} </td>
                             <td> {product.price} </td>
                             <td> {product.stock} </td>
-                            <td> {product.image} </td>
+                            <td>
+                                <img src={product.image}/>
+                            </td>
                             <td> {product.id_categoria} </td>
                             <td> {product.id_marca} </td>
                             <td>
@@ -60,7 +92,7 @@ const ShowProducts = () => {
                                 <button onClick={ ()=> deleteProduct(product.id) } className='btn btn-danger'>Delete</button>
                             </td>
                         </tr>
-                    )) }
+                    )) } */}
                 </tbody>
             </table>
         </div>
