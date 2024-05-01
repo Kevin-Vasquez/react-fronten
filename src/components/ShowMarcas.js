@@ -34,7 +34,7 @@ const ShowMarcas = () => {
             <table className="table table-striped">
                 <thead className="bg-primary text-white">
                     <tr>
-                        <th>name</th>
+                        <th>brand name</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
